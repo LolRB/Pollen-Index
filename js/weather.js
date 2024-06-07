@@ -84,6 +84,41 @@ function displayTodaysWeather(data, cityName) {
   }
 }
 
+function displayNextFiveDaysWeather(data, cityName) {
+  // Clear previous forecast data
+  headerForecast.innerHTML = "";
+  nextDaysForecast.innerHTML = "";
+
+  const forecastHeader = document.createElement("h2");
+  forecastHeader.textContent = `5-Day Weather Forecast in ${cityName}`;
+  headerForecast.appendChild(forecastHeader);
+
+  if (data && data.list && data.list.length > 0) {
+    const forecastDays = {};
+
+    // Collect midday data points for the next five days
+    data.list.forEach((item) => {
+      const date = new Date(item.dt * 1000);
+      const day = date.toISOString().split("T")[0];
+      const hour = date.getUTCHours();
+
+      if (!forecastDays[day] && hour === 12) {
+        forecastDays[day] = item;
+      }
+    });
+
+    const days = Object.keys(forecastDays).sort();
+    const nextFiveDays = days.slice(0, 5);
+
+    nextFiveDays.forEach((day) => {
+      displayWeatherDay(forecastDays[day], day, nextDaysForecast);
+    });
+  } else {
+    nextDaysForecast.innerHTML +=
+      "<p>No weather data available for the next 5 days.</p>";
+  }
+}
+
 searchButton.addEventListener("click", () => {
   if (input.value === "") {
     modal.classList.add("is-active");
