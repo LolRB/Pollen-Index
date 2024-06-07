@@ -30,34 +30,29 @@
         <div class="columns">
           <div class="column is-2 is-flex is-flex-direction-column">
             <h1 class="is-size-5 mt-1 mb-1">Search a City's weather:</h1>
-            <input
-              id="city-input"
-              class="mt-1 mb-1"
-              placeholder="Type a City"
-            />
-            <button id="search-button" class="button mt-1 is-link is-small">
-              Search
-            </button>
+            <input id="city-input" class="mt-1 mb-1" placeholder="Type a City" />
+            <button id="search-button" class="button mt-1 is-link is-small">Search</button>
             <hr />
-            <div
-              id="cities"
-              class="is-flex is-flex-direction-column mt-3 mb-3 has-text-link"
-            ></div>
+            <div id="cities" class="is-flex is-flex-direction-column mt-3 mb-3 has-text-link"></div>
           </div>
           <div class="column is-10 container">
             <article>
               <div id="weatherHeader" class="mt-2 mb-2"></div>
               <div id="weather" class="mt-2 mb-2"></div>
               <div id="forecastHeader" class="mt-2 mb-2"></div>
-              <div
-                id="next5Days"
-                class="mt-2 mb-2 is-flex is-flex-direction-row"
-              ></div>
+              <div id="next5Days" class="mt-2 mb-2 is-flex is-flex-direction-row"></div>
             </article>
           </div>
         </div>
       </section>
+
+      <section id="modal" class="modal">
+        <div id="modalBg" class="modal-background"></div>
+        <div class="modal-content has-background-white py-5 px-5">
+          <h3 class="title has-text-black is-flex is-justify-content-center">Type a city's name to get results</h3>
+        </div>
+      </section>
     </main>
-    <script src="./weather.js"></script>
+    <script src="./js/weather.js"></script>
   </body>
 </html>
