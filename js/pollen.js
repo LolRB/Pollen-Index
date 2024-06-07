@@ -3,6 +3,9 @@ const pollenApiKey = "AIzaSyBPT5CD2o4JeOADd5o1m_7wkx9wgVopfh4";
 const pollen = document.getElementById("pollen");
 const searchButton = document.getElementById("search-button1");
 const cities = document.getElementById("cities1");
+const modal = document.getElementById("modal1");
+const modalBg = document.getElementById("modalBg1");
+const input = document.getElementById("city-input1");
 
 function cityApi() {
   const city = document.getElementById("city-input1").value;
@@ -60,7 +63,7 @@ function getApi(lat, lon, cityName) {
         dateElement.textContent = `Date: ${date.toLocaleDateString()}`;
         pollenItem.appendChild(dateElement);
 
-        // Loops through plantInfo to display specific plant information that are in season
+        // Loop through plantInfo to display specific plant information that are in season
         const inSeasonPlants = pollenInfo.plantInfo.filter(
           (plant) => plant.inSeason
         );
@@ -98,7 +101,7 @@ function getApi(lat, lon, cityName) {
           indexDescriptionElement.textContent = `Description: ${indexDescription}`;
           plantElement.appendChild(indexDescriptionElement);
 
-          // Adds health recommendations for the specific plant type if available
+          // Add health recommendations for the specific plant type if available
           if (
             pollenType.healthRecommendations &&
             pollenType.healthRecommendations.length > 0
@@ -160,4 +163,14 @@ function createCityButton(cityName) {
   cities.appendChild(button);
 }
 
-searchButton.addEventListener("click", cityApi);
+searchButton.addEventListener("click", () => {
+  if (input.value === "") {
+    modal.classList.add("is-active");
+  } else {
+    cityApi();
+  }
+});
+
+modalBg.addEventListener("click", () => {
+  modal.classList.remove("is-active");
+});
