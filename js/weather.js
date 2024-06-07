@@ -70,14 +70,9 @@ function displayTodaysWeather(data, cityName) {
     });
 
     if (todaysWeather.length > 0) {
-      displayWeatherDay(
-        todaysWeather[todaysWeather.length - 1],
-        "Next 3 Hours",
-        weather
-      );
+      displayWeatherDay(todaysWeather[todaysWeather.length - 1], "Next 3 Hours", weather);
     } else {
-      weather.innerHTML +=
-        "<p>No weather data available for the next 3 hours.</p>";
+      weather.innerHTML += "<p>No weather data available for the next 3 hours.</p>";
     }
   } else {
     weather.innerHTML = "<p>No weather data available.</p>";
@@ -119,6 +114,36 @@ function displayNextFiveDaysWeather(data, cityName) {
   }
 }
 
+function saveToLocalStorage(cityName, data) {
+  const weatherData = {};
+  const forecastDays = Object.keys(data).slice(0, 6);
+
+  forecastDays.forEach((day) => {
+    weatherData[day] = data[day];
+  });
+
+  localStorage.setItem(cityName, JSON.stringify(weatherData));
+}
+
+function createCityButton(cityName, data) {
+  const cityButton = document.createElement("button");
+  cityButton.classList.add ("button", "mt-1", "is-link", "is-small");
+  cityButton.textContent = cityName;
+
+  cityButton.addEventListener("click", function () {
+    const storedData = localStorage.getItem(cityName);
+    if (storedData) {
+      const weatherData = JSON.parse(storedData);
+      displayTodaysWeather(weatherData, cityName);
+      displayNextFiveDaysWeather(weatherData, cityName);
+    } else {
+      console.error("Weather data not found for the selected city.");
+    }
+  });
+
+  cities.appendChild(cityButton);
+}
+
 function displayWeatherDay(dayData, dayLabel, container) {
   const weatherItem = document.createElement("div");
   weatherItem.className = "weather-item box";
@@ -130,12 +155,12 @@ function displayWeatherDay(dayData, dayLabel, container) {
   const windSpeed = dayData.wind.speed;
 
   weatherItem.innerHTML = `
-      <p><strong>${dayLabel} (${date}):</strong></p>
-      <img src="${iconUrl}" alt="${dayData.weather[0].description}">
-      <p><strong>Temperature:</strong> ${temperature} °C</p>
-      <p><strong>Humidity:</strong> ${humidity}%</p>
-      <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
-    `;
+    <p><strong>${dayLabel} (${date}):</strong></p>
+    <img src="${iconUrl}" alt="${dayData.weather[0].description}">
+    <p><strong>Temperature:</strong> ${temperature} °C</p>
+    <p><strong>Humidity:</strong> ${humidity}%</p>
+    <p><strong>Wind Speed:</strong> ${windSpeed} m/s</p>
+  `;
 
   container.appendChild(weatherItem);
 }
