@@ -51,6 +51,39 @@ function getApi(lat, lon, cityName) {
     });
 }
 
+function displayTodaysWeather(data, cityName) {
+  // Clear previous weather data
+  weatherHeader.innerHTML = "";
+  weather.innerHTML = "";
+
+  // Display the city name
+  const cityHeader = document.createElement("h2");
+  cityHeader.textContent = `Weather in ${cityName} (Today)`;
+  weatherHeader.appendChild(cityHeader);
+
+  if (data && data.list && data.list.length > 0) {
+    const now = new Date().getTime() / 1000; // Current time in seconds since epoch
+    const threeHoursLater = now + 3 * 3600; // 3 hours later in seconds since epoch
+
+    const todaysWeather = data.list.filter((item) => {
+      return item.dt <= threeHoursLater;
+    });
+
+    if (todaysWeather.length > 0) {
+      displayWeatherDay(
+        todaysWeather[todaysWeather.length - 1],
+        "Next 3 Hours",
+        weather
+      );
+    } else {
+      weather.innerHTML +=
+        "<p>No weather data available for the next 3 hours.</p>";
+    }
+  } else {
+    weather.innerHTML = "<p>No weather data available.</p>";
+  }
+}
+
 searchButton.addEventListener("click", () => {
   if (input.value === "") {
     modal.classList.add("is-active");
