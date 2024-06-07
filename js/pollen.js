@@ -135,4 +135,29 @@ function getApi(lat, lon, cityName) {
     });
 }
 
+// Save city data in local storage
+function saveCityData(cityName, cityData) {
+  localStorage.setItem(cityName, JSON.stringify(cityData));
+}
+
+// Retrieve city data from local storage
+function getCityData(cityName) {
+  return JSON.parse(localStorage.getItem(cityName));
+}
+
+function displayCityData(cityName) {
+  const cityData = getCityData(cityName);
+  if (cityData) {
+    getApi(cityData.latitude, cityData.longitude, cityName);
+  }
+}
+
+function createCityButton(cityName) {
+  const button = document.createElement("button");
+  button.textContent = cityName;
+  button.classList.add("button", "mt-1", "is-link", "is-small");
+  button.addEventListener("click", () => displayCityData(cityName));
+  cities.appendChild(button);
+}
+
 searchButton.addEventListener("click", cityApi);
